@@ -9,7 +9,12 @@
 - [Lombok Annotations Support for VS Code](https://marketplace.visualstudio.com/items?itemName=GabrielBB.vscode-lombok)
 
 ### IDE - Gitpod
-[Gitpod](https://www.gitpod.io/)
+[Gitpod](https://www.gitpod.io/)  
+- [Gitpod - Dev Environments in a Browser Tab](https://chrome.google.com/webstore/detail/gitpod-dev-environments-i/dodmmooeoklaejobgleioelladacbeki)  
+  
+tip  
+[How to use docker / docker-compose in your Gitpod workspace ](https://github.com/gitpod-io/gitpod/issues/52#issuecomment-738629624) 
+
 
 ## Ubiquitous Language
 | 中文 | 英文 | 說明 |
@@ -20,7 +25,6 @@
 | 團險主約    | GroupMain  | 合約中的主約  |
 | 團險副約    | GroupAdditional  | 合約中的副約  |
 | 保險項目    | Item  | 實際對應的保險對象  |
-
 
 ## Setp1 - initProject
 
