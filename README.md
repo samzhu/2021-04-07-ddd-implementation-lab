@@ -335,20 +335,19 @@ public void on(CartCreatedEvent event) {
 建立 RestController  
 [cartms/interfaces/rest/CartCommandController.java](https://github.com/samzhu/2021-04-07-ddd-implementation-lab/blob/main/src/main/java/com/example/demo/cartms/interfaces/rest/CartCommandController.java)  
 
+建立 CommandService 處理 Command 的發送
+[cartms/application/internal/commandgateways/CartCommandService.java](https://github.com/samzhu/2021-04-07-ddd-implementation-lab/blob/main/src/main/java/com/example/demo/cartms/application/internal/commandgateways/CartCommandService.java)  
+
+發送的 Command 就會進入 Aggregate 的 CommandHandler
+
+## projection 建立查詢庫
+[cartms/interfaces/eventhandlers/CartEventHandler.java](https://github.com/samzhu/2021-04-07-ddd-implementation-lab/blob/main/src/main/java/com/example/demo/cartms/interfaces/eventhandlers/CartEventHandler.java)
+
+## 重現 Aggregate
+[cartms/application/internal/querygateways/CartQueryService.java](https://github.com/samzhu/2021-04-07-ddd-implementation-lab/blob/main/src/main/java/com/example/demo/cartms/application/internal/querygateways/CartQueryService.java) 提供了查詢方法( FindCartQuery ), 而這個方法是透過 [cartms/domain/queryhandlers/CartAggregateQueryHandler.java](https://github.com/samzhu/2021-04-07-ddd-implementation-lab/blob/main/src/main/java/com/example/demo/cartms/domain/queryhandlers/CartAggregateQueryHandler.java) 從 EventStore 重現聚合  
 
 
-
-
-
-
-
-
-
-
-
-
-
-切換為最新版本
+## 切換為最新版本
 ``` bash
 git checkout main
 ```
