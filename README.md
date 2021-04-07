@@ -220,3 +220,70 @@ public interface CartProductRepository extends JpaRepository<CartProduct, Intege
 下載 TAG[Setp1Complete] 專案內容已完成上面內容  
   
 啟動 docker-compose & springboot 後打開 http://localhost:8080/swagger-ui/ 即可獲得 購物車相關 API 操作資訊
+
+## Setp2 - DDD implementation
+
+### Design Cart Aggregate
+先設計 ValueObject  
+src/main/java/com/example/demo/cartms/domain/model/valueobjects/Customer.java  
+
+以及 Entity
+src/main/java/com/example/demo/cartms/domain/model/entites/CartProduct.java  
+
+接下來設計 Aggregate  
+src/main/java/com/example/demo/cartms/domain/model/aggregates/CartAggregate.java  
+
+設計 建立購物車命令  
+src/main/java/com/example/demo/cartms/domain/commands/CreateCartCommand.java  
+
+設計 購物車已建立事件  
+src/main/java/com/example/demo/cartms/domain/events/CartCreatedEvent.java 
+
+增加 Aggregate 處理 CreateCartCommand 並產生 購物車已建立 的事件
+``` java
+    @CommandHandler
+    public CartAggregate(CreateCartCommand command) {
+        log.debug("Aggregate CreateCartCommand aggregate={}, command={}", this, command);
+        apply(new CartCreatedEvent(command.getCartNumber(), command.getCustomer(), command.getAmount(),
+                new HashMap<String, CartProduct>()));
+    }
+```
+
+增加 Aggregate 處理 CartCreatedEvent 購物車已建立 的事件
+``` java
+    @EventSourcingHandler
+    public void on(CartCreatedEvent event) {
+        log.debug("Aggregate CartCreatedEvent aggregate={}, event={}", this, event);
+        this.cartNumber = event.getCartNumber();
+        this.customer = event.getCustomer();
+        this.amount = event.getAmount();
+        this.cartProducts = event.getCartProducts();
+    }
+```
+  
+依此類堆, 逐步完成 新增購物車商品 的 命令與 購物車商品已新增 的 事件  
+src/main/java/com/example/demo/cartms/domain/commands/AddCartProductCommand.java  
+src/main/java/com/example/demo/cartms/domain/events/CartProductAddedEvent.java  
+
+### Design Interface Rest API
+設計你希望用來建立購物車 與 新增商品的 Rest API Dto, 可放置於 src/main/java/com/example/demo/cartms/interfaces/rest/dto  
+參考  
+- src/main/java/com/example/demo/cartms/interfaces/rest/dto/CreateCartDto.java
+- src/main/java/com/example/demo/cartms/interfaces/rest/dto/AddCartProductDto.java
+  
+建立 Assembler 物件協助從 DTO 轉為 Command  
+src/main/java/com/example/demo/cartms/interfaces/transform/CartAssembler.java  
+
+建立 RestController  
+
+
+
+
+
+
+
+
+
+
+
+
