@@ -2,13 +2,13 @@
 
 ## Development Environment
 
-### IDE - VSCode
+### Local IDE - VSCode
 [VSCode](https://code.visualstudio.com/)  
 - [Java Extension Pack](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack)  
 - [Spring Boot Extension Pack](https://marketplace.visualstudio.com/items?itemName=Pivotal.vscode-boot-dev-pack)  
 - [Lombok Annotations Support for VS Code](https://marketplace.visualstudio.com/items?itemName=GabrielBB.vscode-lombok)
 
-### IDE - Gitpod
+### Cloud IDE - Gitpod
 [Gitpod](https://www.gitpod.io/)  
 - [Gitpod - Dev Environments in a Browser Tab](https://chrome.google.com/webstore/detail/gitpod-dev-environments-i/dodmmooeoklaejobgleioelladacbeki)  
   
@@ -37,12 +37,49 @@ tip
 ### 建立 package
 建立常用資料夾
 ``` bash
+# 有漏時 CI 不好處理
+touch src/main/resources/.gitkeep
+
+# Springboot 使用設定檔(不會包到 jar 檔中)
 mkdir config
 touch config/application-dev.yml
+
+# 說明文件
 mkdir doc
-touch doc/Architecture.drawio
+
+# 外部資源
 mkdir docker
-touch docker/docker-compose.yml
+cat << 'EOF' > docker/docker-compose.yml
+version: '3.9'
+services:
+  mysql:
+    image: 'mysql:8.0.23'
+    restart: always
+    command: '--default-authentication-plugin=mysql_native_password'
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: 'pw123456'
+      MYSQL_DATABASE: 'testdb'
+      MYSQL_USER: 'user1'
+      MYSQL_PASSWORD: 'pw123456'
+    logging:
+      driver: json-file
+      options:
+        max-size: 20m
+        max-file: '2'
+  axonserver:
+    image: 'axoniq/axonserver:4.4.10'
+    restart: always
+    ports:
+      - '8024:8024'
+      - '8124:8124'
+    logging:
+      driver: json-file
+      options:
+        max-size: 20m
+        max-file: '2'
+EOF
 ```
 
 建立 service 共用 package
@@ -51,7 +88,6 @@ export BasePackage=src/main/java/com/example/demo
 mkdir -p ${BasePackage}/configuration
 mkdir -p ${BasePackage}/exceptions
 mkdir -p ${BasePackage}/shareddomain
-mkdir -p ${BasePackage}/shareddomain/rest/dto
 ```
 
 ### 設定 Bounded Context 名稱
@@ -90,6 +126,8 @@ mkdir -p ${BasePackage}/${BoundedContext}/interfaces/eventhandlers
 
 ### 讓空資料夾也可以 commit
 ``` bash
+touch ${BasePackage}/exceptions/.gitkeep
+
 touch ${BasePackage}/${BoundedContext}/application/internal/commandgateways/.gitkeep
 touch ${BasePackage}/${BoundedContext}/application/internal/querygateways/.gitkeep
 touch ${BasePackage}/${BoundedContext}/application/internal/sagamanagers/.gitkeep
@@ -107,7 +145,6 @@ touch ${BasePackage}/${BoundedContext}/domain/queryhandlers/.gitkeep
 touch ${BasePackage}/${BoundedContext}/infrastructure/repositories/.gitkeep
 touch ${BasePackage}/${BoundedContext}/infrastructure/brokers/.gitkeep
 
-touch ${BasePackage}/${BoundedContext}/interfaces
 touch ${BasePackage}/${BoundedContext}/interfaces/transform/.gitkeep
 touch ${BasePackage}/${BoundedContext}/interfaces/rest/dto/.gitkeep
 touch ${BasePackage}/${BoundedContext}/interfaces/eventhandlers/.gitkeep
@@ -116,10 +153,10 @@ touch ${BasePackage}/${BoundedContext}/interfaces/eventhandlers/.gitkeep
 ### DB 版控
 
 #### 建立 projecttion 對應的 Table
-src/main/resources/db/migration/V1.0.0__basic_schema.sql
+[src/main/resources/db/migration/V1.0.0__basic_schema.sql](https://github.com/samzhu/2021-04-07-ddd-implementation-lab/blob/main/src/main/resources/db/migration/V1.0.0__basic_schema.sql)
 
 #### axon 需要的管理表
-src/main/resources/db/migration/V1.1.0__axon_schema.sql
+[src/main/resources/db/migration/V1.1.0__axon_schema.sql](https://github.com/samzhu/2021-04-07-ddd-implementation-lab/blob/main/src/main/resources/db/migration/V1.1.0__axon_schema.sql)
 
 ### 建立需要的設定檔
 src/main/resources/application.yml
@@ -211,7 +248,7 @@ public interface CartProductRepository extends JpaRepository<CartProduct, Intege
 
 ### 新增簡易錯誤訊息回傳格式
 參考  
-- src/main/java/com/example/demo/shareddomain/rest/dto/ErrorMessageBody.java
+- [src/main/java/com/example/demo/shareddomain/rest/dto/ErrorMessageBody.java](https://github.com/samzhu/2021-04-07-ddd-implementation-lab/blob/main/src/main/java/com/example/demo/shareddomain/rest/dto/ErrorMessageBody.java)
 
 ### 新增相關組態設定
 參考  
