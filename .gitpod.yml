@@ -14,11 +14,11 @@ tasks:
   - init: ./gradlew --info
 
 
-vscode:
-  extensions:
-    - redhat.java
-    - Pivotal.vscode-boot-dev-pack
-    - richardwillis.vscode-gradle
-    - GabrielBB.vscode-lombok
-    - redhat.fabric8-analytics
-    - sonarsource.sonarlint-vscode
+# vscode:
+#   extensions:
+#     - redhat.java
+#     - Pivotal.vscode-boot-dev-pack
+#     - richardwillis.vscode-gradle
+#     - GabrielBB.vscode-lombok
+#     - redhat.fabric8-analytics
+#     - sonarsource.sonarlint-vscode
