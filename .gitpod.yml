@@ -2,7 +2,10 @@ github:
   prebuilds:
     pullRequestsFromForks: true
     addComment: true
-    
+
+- init: ./gradlew --info
+  command: java -jar target/*.jar
+
 # image: public.ecr.aws/pahudnet/gitpod-workspace:latest
 
 # image:
@@ -16,4 +19,9 @@ tasks:
 
 vscode:
   extensions:
-    - dbaeumer.vscode-eslint@2.1.5:9Wg0Glx/TwD8ElFBg+FKcQ==
+    - vscjava.vscode-java-pack
+    - Pivotal.vscode-boot-dev-pack
+    - richardwillis.vscode-gradle-extension-pack
+    - GabrielBB.vscode-lombok
+    - redhat.fabric8-analytics
+    - sonarsource.sonarlint-vscode
