@@ -3,8 +3,6 @@ github:
     pullRequestsFromForks: true
     addComment: true
 
-- init: ./gradlew --info
-
 # image: public.ecr.aws/pahudnet/gitpod-workspace:latest
 
 # image:
@@ -14,6 +12,7 @@ tasks:
   - name: run docker
     command: sudo docker-up & 
   - command: echo "source /usr/share/bash-completion/completions/git" >> $HOME/.bashrc
+  - init: ./gradlew --info
 
 
 vscode:
