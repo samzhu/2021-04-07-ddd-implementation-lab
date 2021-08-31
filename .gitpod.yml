@@ -1,7 +1,6 @@
 github:
   prebuilds:
     pullRequestsFromForks: true
-    addComment: true
 
 # image: public.ecr.aws/pahudnet/gitpod-workspace:latest
 
