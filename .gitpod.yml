@@ -4,7 +4,6 @@ github:
     addComment: true
 
 - init: ./gradlew --info
-  command: java -jar target/*.jar
 
 # image: public.ecr.aws/pahudnet/gitpod-workspace:latest
 
